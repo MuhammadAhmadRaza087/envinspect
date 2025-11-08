@@ -9,9 +9,9 @@ test('redactSecret should properly redact secrets', t => {
 
     t.is(redactSecret('short'), '***REDACTED***');
 
-    const redacted2 = redactSecret('sk_live_abcdefghijklmnopqrstuvwxyz123456');
+    const redacted2 = redactSecret('sk_live_FakeTestKeyXXXXXXXXX');
     t.true(redacted2.startsWith('sk_l'));
-    t.true(redacted2.endsWith('56'));
+    t.true(redacted2.endsWith('XX'));
     t.true(redacted2.includes('**'));
 });
 
@@ -34,7 +34,7 @@ test('should detect Google API Key', t => {
 });
 
 test('should detect Stripe API Key', t => {
-    const content = 'stripe.apiKey = "sk_live_51AbCdEfGhIjKlMnOpQrStUvWxYz";';
+    const content = 'stripe.apiKey = "sk_live_FakeTestKeyXXXXXXXXXXXXX";';
     const secrets = detectSecretsInContent(content, 'test.js');
 
     const stripeKey = secrets.find(s => s.type === 'Stripe API Key');
@@ -103,7 +103,7 @@ test('should handle multiple secrets in same file', t => {
     const content = `
     AWS_KEY=AKIAIOSFODNN7EXAMPLE
     GOOGLE_KEY=AIzaSyDaGmWKa4JsXZ-HjGw7ISLn_3namBGewQe
-    STRIPE_KEY=sk_live_51AbCdEfGhIjKlMnOpQrStUvWxYz
+    STRIPE_KEY=sk_live_FakeTestKeyXXXXXXXXXXXXX
   `;
     const secrets = detectSecretsInContent(content, '.env');
 
